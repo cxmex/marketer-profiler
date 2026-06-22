@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Kind of Marketer Are You?</title>
+    <meta property="og:title" content="What Kind of Marketer Are You?">
+    <meta property="og:description" content="5-minute assessment across 5 marketing dimensions. Growth Hacker, Brand Builder, Content Creator, Performance Marketer, or Community Architect?">
+    <meta property="og:image" content="https://ogforge.dev/api/v1?title=What+Kind+of+Marketer+Are+You%3F&subtitle=Growth+Hacker+%E2%80%A2+Brand+Builder+%E2%80%A2+Content+Creator+%E2%80%A2+Performance+%E2%80%A2+Community&theme=dark&accent=ec4899">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+        .screen { display: none; min-height: 100vh; padding-top: 20px; }
+        .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .landing-card { background: #1e293b; border-radius: 16px; padding: 40px 32px; max-width: 520px; width: 100%; text-align: center; }
+        .landing-card .tag { display: inline-block; padding: 4px 12px; background: rgba(236,72,153,0.15); color: #ec4899; border-radius: 20px; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+        .landing-card h1 { font-size: 1.8rem; margin-bottom: 8px; line-height: 1.2; }
+        .landing-card .sub { font-size: 0.9rem; color: #94a3b8; margin-bottom: 24px; line-height: 1.5; }
+        .dims-grid { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+        .dim-chip { padding: 6px 14px; background: #0f172a; border: 1px solid #334155; border-radius: 20px; font-size: 0.75rem; color: #94a3b8; }
+        .btn-primary { padding: 16px 40px; border-radius: 12px; border: none; background: #ec4899; color: white; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary:hover { background: #db2777; transform: translateY(-2px); }
+        .fine-print { font-size: 0.75rem; color: #475569; margin-top: 16px; }
+        .quiz-screen { padding: 20px; padding-top: 0; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; max-width: 600px; margin: 0 auto; }
+        .section-label { font-size: 0.85rem; color: #ec4899; font-weight: 600; }
+        .progress-text { font-size: 0.85rem; color: #64748b; }
+        .progress-bar { max-width: 600px; margin: 0 auto; height: 4px; background: #334155; border-radius: 2px; }
+        .progress-fill { height: 100%; background: #ec4899; border-radius: 2px; transition: width 0.3s; }
+        .question-container { max-width: 600px; margin: 20px auto; }
+        .section-divider { padding: 16px 0 8px; }
+        .section-divider h3 { color: #ec4899; font-size: 1rem; }
+        .q-card { background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+        .q-card .q-text { font-size: 0.9rem; margin-bottom: 10px; line-height: 1.4; }
+        .likert { display: flex; gap: 6px; justify-content: center; }
+        .likert label { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 4px; border-radius: 8px; transition: all 0.15s; min-width: 48px; }
+        .likert label:hover { background: rgba(236,72,153,0.1); }
+        .likert input { display: none; }
+        .likert .circle { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #475569; transition: all 0.15s; }
+        .likert input:checked + .circle { background: #ec4899; border-color: #ec4899; }
+        .likert .label-text { font-size: 0.6rem; color: #64748b; text-align: center; }
+        .submit-area { text-align: center; padding: 24px 20px 40px; }
+        .results-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .section-card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .section-card h2 { font-size: 1.1rem; margin-bottom: 12px; color: #ec4899; }
+        .archetype-header { text-align: center; padding: 16px 0; }
+        .archetype-emoji { font-size: 3rem; }
+        .archetype-title { font-size: 1.3rem; font-weight: 700; margin: 8px 0; }
+        .archetype-quote { font-style: italic; color: #94a3b8; font-size: 0.9rem; }
+        .dim-bar-container { margin: 8px 0; }
+        .dim-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
+        .dim-label .name { color: #94a3b8; }
+        .dim-label .score { font-weight: 600; }
+        .dim-bar-bg { height: 8px; background: #334155; border-radius: 4px; }
+        .dim-bar { height: 100%; border-radius: 4px; transition: width 0.8s; width: 0; }
+        .share-section { text-align: center; margin-top: 8px; }
+        .radar-wrap { display: flex; justify-content: center; margin: 12px 0; }
+        .radar-svg { width: 260px; height: 260px; }
+        .radar-svg .grid { fill: none; stroke: #334155; stroke-width: 0.5; }
+        .radar-svg .data-area { fill: rgba(236,72,153,0.2); stroke: #ec4899; stroke-width: 2; }
+        .radar-svg .dot { fill: #ec4899; }
+        .radar-svg .label-text { fill: #94a3b8; font-size: 9px; font-family: sans-serif; }
+        .radar-svg .score-text { fill: #ec4899; font-size: 9px; font-weight: 700; font-family: sans-serif; }
+        .radar-svg .axis { stroke: #334155; stroke-width: 0.5; }
+        .ai-narrative { font-size: 0.85rem; color: #94a3b8; line-height: 1.7; white-space: pre-wrap; }
+        .loading { color: #64748b; font-style: italic; }
+        @media (max-width: 600px) { .landing-card { padding: 28px 20px; } .landing-card h1 { font-size: 1.4rem; } .likert label { min-width: 40px; } .likert .circle { width: 24px; height: 24px; } }
+    </style>
+</head>
+<body>
+
+<div class="screen active" id="landingScreen">
+    <div class="landing-card">
+        <div class="tag">Research-backed</div>
+        <h1>What Kind of Marketer Are You?</h1>
+        <div class="sub">5-minute assessment across 5 marketing dimensions. Discover your archetype and get a personalized growth plan with AI coaching.</div>
+        <div class="dims-grid">
+            <span class="dim-chip">Growth Hacker</span>
+            <span class="dim-chip">Brand Builder</span>
+            <span class="dim-chip">Content Creator</span>
+            <span class="dim-chip">Performance Marketer</span>
+            <span class="dim-chip">Community Architect</span>
+        </div>
+        <button class="btn-primary" onclick="startQuiz()">Discover My Marketing DNA</button>
+        <p class="fine-print">No registration. Instant results. Free.</p>
+    </div>
+</div>
+
+<div class="screen quiz-screen" id="quizScreen">
+    <div class="quiz-header">
+        <span class="section-label" id="sectionLabel">Growth Hacker</span>
+        <span class="progress-text" id="progressText">0/20</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="question-container" id="questionContainer"></div>
+    <div class="submit-area" id="submitArea" style="display:none;">
+        <button class="btn-primary" onclick="submitQuiz()">See My Results</button>
+    </div>
+</div>
+
+<div class="screen" id="resultsScreen">
+    <div class="results-container" id="resultsContainer"></div>
+</div>
+
+<script>
+var ARCHETYPES = {
+    GrowthHacker: { name: 'Growth Hacker', emoji: '&#128640;', color: '#22c55e', quote: 'A growth hacker is a person whose true north is growth.', desc: 'You live for experiments, funnels, and data. Every campaign is a hypothesis to test. You measure everything and optimize relentlessly.' },
+    BrandBuilder: { name: 'Brand Builder', emoji: '&#127912;', color: '#a78bfa', quote: 'A brand is a story that is always being told.', desc: 'You think in narratives, positioning, and emotional connections. You build brands that people feel, not just see.' },
+    ContentCreator: { name: 'Content Creator', emoji: '&#9997;', color: '#3b82f6', quote: 'Content is the atomic particle of all digital marketing.', desc: 'You create. Blogs, videos, podcasts, social posts -- you build audiences through valuable content that earns attention.' },
+    PerformanceMarketer: { name: 'Performance Marketer', emoji: '&#128202;', color: '#f59e0b', quote: 'Half the money I spend on advertising is wasted. The trouble is I know which half.', desc: 'You master paid channels. ROAS, CAC, attribution models, and media buying are your language. Every dollar is tracked.' },
+    CommunityArchitect: { name: 'Community Architect', emoji: '&#127760;', color: '#ec4899', quote: 'People dont buy products, they join tribes.', desc: 'You build movements, not campaigns. Word-of-mouth, advocacy, and community-led growth are your superpowers.' },
+};
+
+var DIM_COLORS = { GrowthHacker: '#22c55e', BrandBuilder: '#a78bfa', ContentCreator: '#3b82f6', PerformanceMarketer: '#f59e0b', CommunityArchitect: '#ec4899' };
+
+var FAMOUS = {
+    'Sean Ellis': { GrowthHacker: 95, BrandBuilder: 40, ContentCreator: 50, PerformanceMarketer: 70, CommunityArchitect: 45 },
+    'Seth Godin': { GrowthHacker: 50, BrandBuilder: 95, ContentCreator: 85, PerformanceMarketer: 20, CommunityArchitect: 75 },
+    'Gary Vaynerchuk': { GrowthHacker: 60, BrandBuilder: 70, ContentCreator: 95, PerformanceMarketer: 55, CommunityArchitect: 80 },
+    'Neil Patel': { GrowthHacker: 85, BrandBuilder: 50, ContentCreator: 90, PerformanceMarketer: 80, CommunityArchitect: 40 },
+    'Emily Weiss': { GrowthHacker: 55, BrandBuilder: 85, ContentCreator: 60, PerformanceMarketer: 45, CommunityArchitect: 95 },
+    'Ann Handley': { GrowthHacker: 40, BrandBuilder: 70, ContentCreator: 95, PerformanceMarketer: 30, CommunityArchitect: 65 },
+    'Ryan Holiday': { GrowthHacker: 75, BrandBuilder: 60, ContentCreator: 90, PerformanceMarketer: 50, CommunityArchitect: 45 },
+    'Rand Fishkin': { GrowthHacker: 70, BrandBuilder: 65, ContentCreator: 80, PerformanceMarketer: 55, CommunityArchitect: 85 },
+};
+
+var sections = [
+    { name: 'Growth Hacker', dim: 'GrowthHacker', emoji: '&#128640;', items: [
+        { text: 'I constantly run experiments to find what moves the needle.' },
+        { text: 'I think in funnels: awareness, activation, retention, referral, revenue.' },
+        { text: 'I get excited by finding a hack that 10x\'s a metric overnight.' },
+        { text: 'I would rather have ugly ads that convert than beautiful ads that don\'t.' },
+    ]},
+    { name: 'Brand Builder', dim: 'BrandBuilder', emoji: '&#127912;', items: [
+        { text: 'I believe a strong brand is the most valuable long-term marketing asset.' },
+        { text: 'I think about how every touchpoint makes people FEEL about our company.' },
+        { text: 'I\'d rather build brand equity slowly than chase short-term metrics.' },
+        { text: 'I can articulate our positioning vs competitors in one sentence.' },
+    ]},
+    { name: 'Content Creator', dim: 'ContentCreator', emoji: '&#9997;', items: [
+        { text: 'I naturally create content -- writing, videos, or social posts -- even without being asked.' },
+        { text: 'I believe the best marketing doesn\'t feel like marketing. It feels like a gift.' },
+        { text: 'I can turn a complex topic into an engaging piece that anyone can understand.' },
+        { text: 'I study what makes content go viral and apply those patterns intentionally.' },
+    ]},
+    { name: 'Performance Marketer', dim: 'PerformanceMarketer', emoji: '&#128202;', items: [
+        { text: 'I can look at a Google/Meta Ads dashboard and immediately spot what to optimize.' },
+        { text: 'I think in terms of CAC, LTV, ROAS, and attribution windows.' },
+        { text: 'I\'d rather spend $1,000 on proven paid channels than $100 on experimental ones.' },
+        { text: 'I build detailed tracking and attribution for every marketing dollar spent.' },
+    ]},
+    { name: 'Community Architect', dim: 'CommunityArchitect', emoji: '&#127760;', items: [
+        { text: 'I believe the best marketing comes from customers telling other customers.' },
+        { text: 'I actively build and nurture communities around our product or mission.' },
+        { text: 'I think about how to turn customers into advocates, not just buyers.' },
+        { text: 'I\'d rather have 1,000 true fans than 100,000 passive followers.' },
+    ]},
+];
+
+var allItems = [];
+sections.forEach(function(s) { s.items.forEach(function(item) { allItems.push({ text: item.text, dim: s.dim }); }); });
+
+var userEmail = '';
+var answers = {};
+var globalScores = {};
+
+function startQuiz() {
+    userEmail = 'anonymous_' + Date.now();
+    document.getElementById('landingScreen').classList.remove('active');
+    var qs = document.getElementById('quizScreen');
+    qs.classList.add('active');
+    qs.style.display = 'block';
+    renderQuestions();
+}
+
+function renderQuestions() {
+    var container = document.getElementById('questionContainer');
+    var html = '';
+    var globalIdx = 0;
+    sections.forEach(function(section) {
+        html += '<div class="section-divider"><h3>' + section.emoji + ' ' + section.name + '</h3></div>';
+        section.items.forEach(function(item) {
+            html += '<div class="q-card"><div class="q-text">' + item.text + '</div><div class="likert">';
+            var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
+            for (var v = 1; v <= 5; v++) {
+                html += '<label><input type="radio" name="q' + globalIdx + '" value="' + v + '" onchange="recordAnswer(' + globalIdx + ',' + v + ')"><span class="circle"></span><span class="label-text">' + labels[v-1] + '</span></label>';
+            }
+            html += '</div></div>';
+            globalIdx++;
+        });
+    });
+    container.innerHTML = html;
+}
+
+function recordAnswer(idx, val) {
+    answers[idx] = val;
+    var answered = Object.keys(answers).length;
+    document.getElementById('progressText').textContent = answered + '/' + allItems.length;
+    document.getElementById('progressFill').style.width = (answered / allItems.length * 100) + '%';
+    var sIdx = Math.floor(idx / 4);
+    if (sIdx < sections.length) document.getElementById('sectionLabel').textContent = sections[sIdx].name;
+    if (answered >= allItems.length) document.getElementById('submitArea').style.display = 'block';
+}
+
+function scoreSection(dim) {
+    var sum = 0, count = 0, gi = 0;
+    sections.forEach(function(s) { s.items.forEach(function() { if (s.dim === dim && answers[gi]) { sum += answers[gi]; count++; } gi++; }); });
+    return count > 0 ? Math.round((sum / (count * 5)) * 100) : 0;
+}
+
+async function submitQuiz() {
+    if (Object.keys(answers).length < allItems.length) { alert('Please answer all questions.'); return; }
+    var scores = {};
+    sections.forEach(function(s) { scores[s.dim] = scoreSection(s.dim); });
+    globalScores = scores;
+    var sorted = Object.entries(scores).sort(function(a, b) { return b[1] - a[1]; });
+    var primary = sorted[0][0], secondary = sorted[1][0];
+
+    var bestMatch = '', bestDist = Infinity;
+    for (var name in FAMOUS) { var dist = 0; for (var d in scores) { dist += Math.pow((scores[d]||0) - (FAMOUS[name][d]||0), 2); } if (dist < bestDist) { bestDist = dist; bestMatch = name; } }
+
+    var payload = { email: userEmail, scores: scores, primary_type: primary, famous_match: bestMatch, timestamp: new Date().toISOString() };
+    try { await fetch('/api/marketer-profile', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }); } catch(e) {}
+
+    showResults(scores, sorted, primary, secondary, bestMatch);
+}
+
+function showResults(scores, sorted, primary, secondary, famousMatch) {
+    document.getElementById('quizScreen').classList.remove('active');
+    document.getElementById('quizScreen').style.display = 'none';
+    var rs = document.getElementById('resultsScreen');
+    rs.classList.add('active'); rs.style.display = 'flex';
+
+    var pData = ARCHETYPES[primary];
+    var dimBarsHTML = '';
+    sorted.forEach(function(e) {
+        var d = e[0], pct = e[1];
+        dimBarsHTML += '<div class="dim-bar-container"><div class="dim-label"><span class="name">' + ARCHETYPES[d].name + '</span><span class="score" style="color:' + DIM_COLORS[d] + '">' + pct + '%</span></div><div class="dim-bar-bg"><div class="dim-bar" data-score="' + pct + '" style="background:' + DIM_COLORS[d] + ';"></div></div></div>';
+    });
+
+    var radarSVG = buildRadar(scores);
+    var shareText = "I'm a " + pData.name + " like " + famousMatch + "! What kind of marketer are you? ";
+
+    var container = document.getElementById('resultsContainer');
+    container.innerHTML =
+        '<div class="section-card"><div class="archetype-header"><div class="archetype-emoji">' + pData.emoji + '</div><div class="archetype-title" style="color:' + pData.color + '">' + pData.name + '</div><div class="archetype-quote">"' + pData.quote + '"</div><p style="margin-top:12px;font-size:0.9rem;color:#94a3b8;">' + pData.desc + '</p></div></div>' +
+        '<div class="section-card"><h2>Your Marketing Profile</h2><div class="radar-wrap">' + radarSVG + '</div>' + dimBarsHTML + '</div>' +
+        '<div class="section-card"><h2>Famous Match: ' + famousMatch + '</h2><p style="font-size:0.85rem;color:#94a3b8;">Based on your scores, you share the most similar marketing DNA with <strong>' + famousMatch + '</strong>.</p></div>' +
+        '<div class="section-card ai-section"><h2>AI Analysis</h2><div class="ai-narrative" id="aiNarrative"><p class="loading">Generating your personalized analysis...</p></div></div>' +
+        '<div class="section-card"><h2>AI Marketing Coach</h2><div style="display:flex;gap:8px;"><input type="text" id="coachQuestion" placeholder="Ask about growth, content, branding, ads..." style="flex:1;padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;outline:none;"><button onclick="askCoach()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Ask</button></div><div id="coachResponse" style="margin-top:12px;font-size:0.85rem;color:#94a3b8;line-height:1.6;"></div></div>' +
+        '<div class="section-card"><div class="share-section"><p style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">Share your marketing profile</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;"><a href="https://wa.me/?text=' + encodeURIComponent(shareText + window.location.origin) + '" target="_blank" style="padding:10px 20px;background:#25D366;color:white;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a><button onclick="navigator.clipboard.writeText(\'' + shareText + '\'+window.location.origin).then(function(){this.textContent=\'Copied!\'}.bind(this))" style="padding:10px 20px;background:#334155;color:#e2e8f0;border:1px solid #ec4899;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;">Copy link</button></div></div></div>' +
+        '<div class="section-card"><div style="text-align:center;"><p style="font-size:1rem;font-weight:600;margin-bottom:4px;">Save your results</p><p style="font-size:0.8rem;color:#94a3b8;margin-bottom:12px;">Get your full marketing profile report</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><input type="email" id="postEmail" placeholder="you@email.com" style="padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;width:200px;outline:none;"><button onclick="saveEmail()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Save</button></div><div id="saveMsg" style="font-size:0.85rem;color:#22c55e;margin-top:8px;display:none;"></div></div></div>';
+
+    setTimeout(function() { document.querySelectorAll('.dim-bar').forEach(function(b) { b.style.width = b.dataset.score + '%'; }); }, 300);
+
+    fetch('/api/ai/narrative', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({scores:scores}) })
+        .then(function(r) { return r.json(); })
+        .then(function(d) { document.getElementById('aiNarrative').innerHTML = '<p>' + (d.narrative||'AI unavailable.').replace(/\n/g,'</p><p>') + '</p>'; })
+        .catch(function() { document.getElementById('aiNarrative').innerHTML = '<p>AI analysis unavailable.</p>'; });
+}
+
+async function askCoach() {
+    var q = document.getElementById('coachQuestion').value.trim();
+    if (!q) return;
+    document.getElementById('coachResponse').innerHTML = '<em>Thinking...</em>';
+    try { var r = await fetch('/api/ai/coach', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({scores:globalScores,question:q}) }); var d = await r.json(); document.getElementById('coachResponse').textContent = d.answer||'No response.'; } catch(e) { document.getElementById('coachResponse').textContent = 'Coach unavailable.'; }
+}
+
+async function saveEmail() {
+    var email = document.getElementById('postEmail').value.trim().toLowerCase();
+    if (!email||!email.includes('@')) { alert('Please enter a valid email'); return; }
+    try { await fetch('/api/marketer-profile', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:email,scores:globalScores,timestamp:new Date().toISOString()}) }); } catch(e) {}
+    document.getElementById('saveMsg').textContent = 'Results saved!';
+    document.getElementById('saveMsg').style.display = 'block';
+    document.getElementById('postEmail').disabled = true;
+}
+
+function buildRadar(scores) {
+    var dims = Object.keys(ARCHETYPES), n = dims.length, cx = 130, cy = 130, r = 90;
+    var startAngle = -Math.PI / 2, step = (2 * Math.PI) / n;
+    function pol(a, rad) { return { x: cx + rad * Math.cos(a), y: cy + rad * Math.sin(a) }; }
+    var gridHTML = '', axesHTML = '';
+    for (var ring = 1; ring <= 4; ring++) { var rr = r*ring/4, pts=[]; for (var i=0;i<n;i++){var p=pol(startAngle+i*step,rr);pts.push(p.x+','+p.y);} gridHTML+='<polygon class="grid" points="'+pts.join(' ')+'"/>'; }
+    for (var i=0;i<n;i++){var p=pol(startAngle+i*step,r); axesHTML+='<line class="axis" x1="'+cx+'" y1="'+cy+'" x2="'+p.x+'" y2="'+p.y+'"/>';}
+    var dataPts=[],dotsHTML='';
+    dims.forEach(function(d,i){var a=startAngle+i*step,val=(scores[d]||0)/100*r,p=pol(a,val);dataPts.push(p.x+','+p.y);dotsHTML+='<circle class="dot" cx="'+p.x+'" cy="'+p.y+'" r="3"/>';});
+    var dataHTML='<polygon class="data-area" points="'+dataPts.join(' ')+'"/>';
+    var labelsHTML='';
+    dims.forEach(function(d,i){var a=startAngle+i*step,p=pol(a,r+22),anchor='middle';if(p.x<cx-10)anchor='end';else if(p.x>cx+10)anchor='start';var short=ARCHETYPES[d].name.split(' ')[0];labelsHTML+='<text x="'+p.x+'" y="'+p.y+'" text-anchor="'+anchor+'" dominant-baseline="central" class="label-text" fill="'+DIM_COLORS[d]+'">'+short+'</text>';labelsHTML+='<text x="'+p.x+'" y="'+(p.y+12)+'" text-anchor="'+anchor+'" dominant-baseline="central" class="score-text">'+scores[d]+'%</text>';});
+    return '<svg class="radar-svg" viewBox="0 0 260 260">'+gridHTML+axesHTML+dataHTML+dotsHTML+labelsHTML+'</svg>';
+}
+</script>
+</body>
+</html>
