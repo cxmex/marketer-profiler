@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What Kind of Marketer Are You?</title>
-    <meta property="og:title" content="What Kind of Marketer Are You?">
+    <title>What Kind of Marketer Are You? | Tu ADN de Marketing</title>
+    <meta property="og:title" content="What Kind of Marketer Are You? | Tu ADN de Marketing">
     <meta property="og:description" content="5-minute assessment across 5 marketing dimensions. Growth Hacker, Brand Builder, Content Creator, Performance Marketer, or Community Architect?">
     <meta property="og:image" content="https://ogforge.dev/api/v1?title=What+Kind+of+Marketer+Are+You%3F&subtitle=Growth+Hacker+%E2%80%A2+Brand+Builder+%E2%80%A2+Content+Creator+%E2%80%A2+Performance+%E2%80%A2+Community&theme=dark&accent=ec4899">
     <meta property="og:type" content="website">
@@ -66,6 +66,9 @@
         .radar-svg .axis { stroke: #334155; stroke-width: 0.5; }
         .ai-narrative { font-size: 0.85rem; color: #94a3b8; line-height: 1.7; white-space: pre-wrap; }
         .loading { color: #64748b; font-style: italic; }
+        .lang-toggle { display: flex; gap: 2px; background: #0f172a; border-radius: 8px; padding: 3px; margin-bottom: 16px; justify-content: center; }
+        .lang-btn { padding: 6px 16px; border-radius: 6px; border: none; font-size: 0.75rem; font-weight: 700; cursor: pointer; background: transparent; color: #64748b; transition: all 0.2s; }
+        .lang-btn.active { background: #ec4899; color: white; }
         @media (max-width: 600px) { .landing-card { padding: 28px 20px; } .landing-card h1 { font-size: 1.4rem; } .likert label { min-width: 40px; } .likert .circle { width: 24px; height: 24px; } }
     </style>
 </head>
@@ -73,9 +76,13 @@
 
 <div class="screen active" id="landingScreen">
     <div class="landing-card">
-        <div class="tag">Research-backed</div>
-        <h1>What Kind of Marketer Are You?</h1>
-        <div class="sub">5-minute assessment across 5 marketing dimensions. Discover your archetype and get a personalized growth plan with AI coaching.</div>
+        <div class="lang-toggle">
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn active" onclick="setLang('es')">ES</button>
+        </div>
+        <div class="tag t" data-en="Research-backed" data-es="Basado en investigacion">Basado en investigacion</div>
+        <h1 class="t" data-en="What Kind of Marketer Are You?" data-es="Que Tipo de Marketer Eres?">Que Tipo de Marketer Eres?</h1>
+        <div class="sub t" data-en="5-minute assessment across 5 marketing dimensions. Discover your archetype and get a personalized growth plan with AI coaching." data-es="Evaluacion de 5 minutos en 5 dimensiones de marketing. Descubre tu arquetipo y recibe un plan de crecimiento personalizado con coaching de IA.">Evaluacion de 5 minutos en 5 dimensiones de marketing. Descubre tu arquetipo y recibe un plan de crecimiento personalizado con coaching de IA.</div>
         <div class="dims-grid">
             <span class="dim-chip">Growth Hacker</span>
             <span class="dim-chip">Brand Builder</span>
@@ -83,8 +90,8 @@
             <span class="dim-chip">Performance Marketer</span>
             <span class="dim-chip">Community Architect</span>
         </div>
-        <button class="btn-primary" onclick="startQuiz()">Discover My Marketing DNA</button>
-        <p class="fine-print">No registration. Instant results. Free.</p>
+        <button class="btn-primary t" onclick="startQuiz()" data-en="Discover My Marketing DNA" data-es="Descubre Tu ADN de Marketing">Descubre Tu ADN de Marketing</button>
+        <p class="fine-print t" data-en="No registration. Instant results. Free." data-es="Sin registro. Resultados al instante. Gratis.">Sin registro. Resultados al instante. Gratis.</p>
     </div>
 </div>
 
@@ -96,7 +103,7 @@
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     <div class="question-container" id="questionContainer"></div>
     <div class="submit-area" id="submitArea" style="display:none;">
-        <button class="btn-primary" onclick="submitQuiz()">See My Results</button>
+        <button class="btn-primary t" onclick="submitQuiz()" data-en="See My Results" data-es="Ver Mis Resultados">Ver Mis Resultados</button>
     </div>
 </div>
 
@@ -106,11 +113,11 @@
 
 <script>
 var ARCHETYPES = {
-    GrowthHacker: { name: 'Growth Hacker', emoji: '&#128640;', color: '#22c55e', quote: 'A growth hacker is a person whose true north is growth.', desc: 'You live for experiments, funnels, and data. Every campaign is a hypothesis to test. You measure everything and optimize relentlessly.' },
-    BrandBuilder: { name: 'Brand Builder', emoji: '&#127912;', color: '#a78bfa', quote: 'A brand is a story that is always being told.', desc: 'You think in narratives, positioning, and emotional connections. You build brands that people feel, not just see.' },
-    ContentCreator: { name: 'Content Creator', emoji: '&#9997;', color: '#3b82f6', quote: 'Content is the atomic particle of all digital marketing.', desc: 'You create. Blogs, videos, podcasts, social posts -- you build audiences through valuable content that earns attention.' },
-    PerformanceMarketer: { name: 'Performance Marketer', emoji: '&#128202;', color: '#f59e0b', quote: 'Half the money I spend on advertising is wasted. The trouble is I know which half.', desc: 'You master paid channels. ROAS, CAC, attribution models, and media buying are your language. Every dollar is tracked.' },
-    CommunityArchitect: { name: 'Community Architect', emoji: '&#127760;', color: '#ec4899', quote: 'People dont buy products, they join tribes.', desc: 'You build movements, not campaigns. Word-of-mouth, advocacy, and community-led growth are your superpowers.' },
+    GrowthHacker: { name: 'Growth Hacker', name_es: 'Growth Hacker', emoji: '&#128640;', color: '#22c55e', quote: 'A growth hacker is a person whose true north is growth.', quote_es: 'Un growth hacker es una persona cuyo norte verdadero es el crecimiento.', desc: 'You live for experiments, funnels, and data. Every campaign is a hypothesis to test. You measure everything and optimize relentlessly.', desc_es: 'Vives para los experimentos, los embudos y los datos. Cada campana es una hipotesis por probar. Mides todo y optimizas sin parar.' },
+    BrandBuilder: { name: 'Brand Builder', name_es: 'Constructor de Marca', emoji: '&#127912;', color: '#a78bfa', quote: 'A brand is a story that is always being told.', quote_es: 'Una marca es una historia que siempre se esta contando.', desc: 'You think in narratives, positioning, and emotional connections. You build brands that people feel, not just see.', desc_es: 'Piensas en narrativas, posicionamiento y conexiones emocionales. Construyes marcas que la gente siente, no solo ve.' },
+    ContentCreator: { name: 'Content Creator', name_es: 'Creador de Contenido', emoji: '&#9997;', color: '#3b82f6', quote: 'Content is the atomic particle of all digital marketing.', quote_es: 'El contenido es la particula atomica de todo el marketing digital.', desc: 'You create. Blogs, videos, podcasts, social posts -- you build audiences through valuable content that earns attention.', desc_es: 'Creas. Blogs, videos, podcasts, posts -- construyes audiencias a traves de contenido valioso que gana atencion.' },
+    PerformanceMarketer: { name: 'Performance Marketer', name_es: 'Marketer de Performance', emoji: '&#128202;', color: '#f59e0b', quote: 'Half the money I spend on advertising is wasted. The trouble is I know which half.', quote_es: 'La mitad del dinero que gasto en publicidad se desperdicia. El problema es que se cual mitad.', desc: 'You master paid channels. ROAS, CAC, attribution models, and media buying are your language. Every dollar is tracked.', desc_es: 'Dominas los canales pagados. ROAS, CAC, modelos de atribucion y compra de medios son tu lenguaje. Cada peso se rastrea.' },
+    CommunityArchitect: { name: 'Community Architect', name_es: 'Arquitecto de Comunidad', emoji: '&#127760;', color: '#ec4899', quote: 'People dont buy products, they join tribes.', quote_es: 'La gente no compra productos, se une a tribus.', desc: 'You build movements, not campaigns. Word-of-mouth, advocacy, and community-led growth are your superpowers.', desc_es: 'Construyes movimientos, no campanas. El boca a boca, la advocacy y el crecimiento liderado por comunidad son tus superpoderes.' },
 };
 
 var DIM_COLORS = { GrowthHacker: '#22c55e', BrandBuilder: '#a78bfa', ContentCreator: '#3b82f6', PerformanceMarketer: '#f59e0b', CommunityArchitect: '#ec4899' };
@@ -127,44 +134,68 @@ var FAMOUS = {
 };
 
 var sections = [
-    { name: 'Growth Hacker', dim: 'GrowthHacker', emoji: '&#128640;', items: [
-        { text: 'I constantly run experiments to find what moves the needle.' },
-        { text: 'I think in funnels: awareness, activation, retention, referral, revenue.' },
-        { text: 'I get excited by finding a hack that 10x\'s a metric overnight.' },
-        { text: 'I would rather have ugly ads that convert than beautiful ads that don\'t.' },
+    { name: 'Growth Hacker', name_es: 'Growth Hacker', dim: 'GrowthHacker', emoji: '&#128640;', items: [
+        { text: 'I constantly run experiments to find what moves the needle.', text_es: 'Constantemente hago experimentos para encontrar lo que mueve la aguja.' },
+        { text: 'I think in funnels: awareness, activation, retention, referral, revenue.', text_es: 'Pienso en embudos: awareness, activacion, retencion, referencia, ingreso.' },
+        { text: 'I get excited by finding a hack that 10x\'s a metric overnight.', text_es: 'Me emociona encontrar un hack que multiplique una metrica por 10 de la noche a la manana.' },
+        { text: 'I would rather have ugly ads that convert than beautiful ads that don\'t.', text_es: 'Prefiero anuncios feos que conviertan a anuncios bonitos que no.' },
     ]},
-    { name: 'Brand Builder', dim: 'BrandBuilder', emoji: '&#127912;', items: [
-        { text: 'I believe a strong brand is the most valuable long-term marketing asset.' },
-        { text: 'I think about how every touchpoint makes people FEEL about our company.' },
-        { text: 'I\'d rather build brand equity slowly than chase short-term metrics.' },
-        { text: 'I can articulate our positioning vs competitors in one sentence.' },
+    { name: 'Brand Builder', name_es: 'Constructor de Marca', dim: 'BrandBuilder', emoji: '&#127912;', items: [
+        { text: 'I believe a strong brand is the most valuable long-term marketing asset.', text_es: 'Creo que una marca fuerte es el activo de marketing mas valioso a largo plazo.' },
+        { text: 'I think about how every touchpoint makes people FEEL about our company.', text_es: 'Pienso en como cada punto de contacto hace SENTIR a la gente sobre nuestra empresa.' },
+        { text: 'I\'d rather build brand equity slowly than chase short-term metrics.', text_es: 'Prefiero construir valor de marca lentamente que perseguir metricas de corto plazo.' },
+        { text: 'I can articulate our positioning vs competitors in one sentence.', text_es: 'Puedo articular nuestro posicionamiento vs competidores en una sola oracion.' },
     ]},
-    { name: 'Content Creator', dim: 'ContentCreator', emoji: '&#9997;', items: [
-        { text: 'I naturally create content -- writing, videos, or social posts -- even without being asked.' },
-        { text: 'I believe the best marketing doesn\'t feel like marketing. It feels like a gift.' },
-        { text: 'I can turn a complex topic into an engaging piece that anyone can understand.' },
-        { text: 'I study what makes content go viral and apply those patterns intentionally.' },
+    { name: 'Content Creator', name_es: 'Creador de Contenido', dim: 'ContentCreator', emoji: '&#9997;', items: [
+        { text: 'I naturally create content -- writing, videos, or social posts -- even without being asked.', text_es: 'Creo contenido naturalmente -- escritos, videos o posts -- sin que me lo pidan.' },
+        { text: 'I believe the best marketing doesn\'t feel like marketing. It feels like a gift.', text_es: 'Creo que el mejor marketing no se siente como marketing. Se siente como un regalo.' },
+        { text: 'I can turn a complex topic into an engaging piece that anyone can understand.', text_es: 'Puedo convertir un tema complejo en una pieza atractiva que cualquiera entienda.' },
+        { text: 'I study what makes content go viral and apply those patterns intentionally.', text_es: 'Estudio que hace que el contenido se vuelva viral y aplico esos patrones intencionalmente.' },
     ]},
-    { name: 'Performance Marketer', dim: 'PerformanceMarketer', emoji: '&#128202;', items: [
-        { text: 'I can look at a Google/Meta Ads dashboard and immediately spot what to optimize.' },
-        { text: 'I think in terms of CAC, LTV, ROAS, and attribution windows.' },
-        { text: 'I\'d rather spend $1,000 on proven paid channels than $100 on experimental ones.' },
-        { text: 'I build detailed tracking and attribution for every marketing dollar spent.' },
+    { name: 'Performance Marketer', name_es: 'Marketer de Performance', dim: 'PerformanceMarketer', emoji: '&#128202;', items: [
+        { text: 'I can look at a Google/Meta Ads dashboard and immediately spot what to optimize.', text_es: 'Puedo ver un dashboard de Google/Meta Ads e inmediatamente identificar que optimizar.' },
+        { text: 'I think in terms of CAC, LTV, ROAS, and attribution windows.', text_es: 'Pienso en terminos de CAC, LTV, ROAS y ventanas de atribucion.' },
+        { text: 'I\'d rather spend $1,000 on proven paid channels than $100 on experimental ones.', text_es: 'Prefiero gastar $1,000 en canales pagados probados que $100 en experimentales.' },
+        { text: 'I build detailed tracking and attribution for every marketing dollar spent.', text_es: 'Construyo tracking detallado y atribucion por cada peso de marketing invertido.' },
     ]},
-    { name: 'Community Architect', dim: 'CommunityArchitect', emoji: '&#127760;', items: [
-        { text: 'I believe the best marketing comes from customers telling other customers.' },
-        { text: 'I actively build and nurture communities around our product or mission.' },
-        { text: 'I think about how to turn customers into advocates, not just buyers.' },
-        { text: 'I\'d rather have 1,000 true fans than 100,000 passive followers.' },
+    { name: 'Community Architect', name_es: 'Arquitecto de Comunidad', dim: 'CommunityArchitect', emoji: '&#127760;', items: [
+        { text: 'I believe the best marketing comes from customers telling other customers.', text_es: 'Creo que el mejor marketing viene de clientes contandole a otros clientes.' },
+        { text: 'I actively build and nurture communities around our product or mission.', text_es: 'Activamente construyo y nutro comunidades alrededor de nuestro producto o mision.' },
+        { text: 'I think about how to turn customers into advocates, not just buyers.', text_es: 'Pienso en como convertir clientes en embajadores, no solo compradores.' },
+        { text: 'I\'d rather have 1,000 true fans than 100,000 passive followers.', text_es: 'Prefiero tener 1,000 fans verdaderos que 100,000 seguidores pasivos.' },
     ]},
 ];
 
+var currentLang = localStorage.getItem('mkt_lang') || 'es';
+
+function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('mkt_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('active');
+    });
+    document.querySelectorAll('.t').forEach(function(el) {
+        var text = el.getAttribute('data-' + lang);
+        if (text) el.innerHTML = text;
+        var ph = el.getAttribute('data-' + lang + '-placeholder');
+        if (ph) el.placeholder = ph;
+    });
+}
+
+function T(en, es) { return currentLang === 'es' ? es : en; }
+function archName(key) { var a = ARCHETYPES[key]; return currentLang === 'es' ? (a.name_es || a.name) : a.name; }
+function archQuote(key) { var a = ARCHETYPES[key]; return currentLang === 'es' ? (a.quote_es || a.quote) : a.quote; }
+function archDesc(key) { var a = ARCHETYPES[key]; return currentLang === 'es' ? (a.desc_es || a.desc) : a.desc; }
+
 var allItems = [];
-sections.forEach(function(s) { s.items.forEach(function(item) { allItems.push({ text: item.text, dim: s.dim }); }); });
+sections.forEach(function(s) { s.items.forEach(function(item) { allItems.push({ text: item.text, text_es: item.text_es, dim: s.dim }); }); });
 
 var userEmail = '';
 var answers = {};
 var globalScores = {};
+
+setLang(currentLang);
 
 function startQuiz() {
     userEmail = 'anonymous_' + Date.now();
@@ -179,11 +210,15 @@ function renderQuestions() {
     var container = document.getElementById('questionContainer');
     var html = '';
     var globalIdx = 0;
+    var labelsEn = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
+    var labelsEs = ['Muy en desacuerdo', 'En desacuerdo', 'Neutral', 'De acuerdo', 'Muy de acuerdo'];
+    var labels = currentLang === 'es' ? labelsEs : labelsEn;
     sections.forEach(function(section) {
-        html += '<div class="section-divider"><h3>' + section.emoji + ' ' + section.name + '</h3></div>';
+        var sName = currentLang === 'es' ? (section.name_es || section.name) : section.name;
+        html += '<div class="section-divider"><h3>' + section.emoji + ' ' + sName + '</h3></div>';
         section.items.forEach(function(item) {
-            html += '<div class="q-card"><div class="q-text">' + item.text + '</div><div class="likert">';
-            var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
+            var qText = currentLang === 'es' ? (item.text_es || item.text) : item.text;
+            html += '<div class="q-card"><div class="q-text">' + qText + '</div><div class="likert">';
             for (var v = 1; v <= 5; v++) {
                 html += '<label><input type="radio" name="q' + globalIdx + '" value="' + v + '" onchange="recordAnswer(' + globalIdx + ',' + v + ')"><span class="circle"></span><span class="label-text">' + labels[v-1] + '</span></label>';
             }
@@ -211,7 +246,7 @@ function scoreSection(dim) {
 }
 
 async function submitQuiz() {
-    if (Object.keys(answers).length < allItems.length) { alert('Please answer all questions.'); return; }
+    if (Object.keys(answers).length < allItems.length) { alert(T('Please answer all questions.', 'Por favor responde todas las preguntas.')); return; }
     var scores = {};
     sections.forEach(function(s) { scores[s.dim] = scoreSection(s.dim); });
     globalScores = scores;
@@ -234,45 +269,48 @@ function showResults(scores, sorted, primary, secondary, famousMatch) {
     rs.classList.add('active'); rs.style.display = 'flex';
 
     var pData = ARCHETYPES[primary];
+    var pName = archName(primary);
     var dimBarsHTML = '';
     sorted.forEach(function(e) {
         var d = e[0], pct = e[1];
-        dimBarsHTML += '<div class="dim-bar-container"><div class="dim-label"><span class="name">' + ARCHETYPES[d].name + '</span><span class="score" style="color:' + DIM_COLORS[d] + '">' + pct + '%</span></div><div class="dim-bar-bg"><div class="dim-bar" data-score="' + pct + '" style="background:' + DIM_COLORS[d] + ';"></div></div></div>';
+        dimBarsHTML += '<div class="dim-bar-container"><div class="dim-label"><span class="name">' + archName(d) + '</span><span class="score" style="color:' + DIM_COLORS[d] + '">' + pct + '%</span></div><div class="dim-bar-bg"><div class="dim-bar" data-score="' + pct + '" style="background:' + DIM_COLORS[d] + ';"></div></div></div>';
     });
 
     var radarSVG = buildRadar(scores);
-    var shareText = "I'm a " + pData.name + " like " + famousMatch + "! What kind of marketer are you? ";
+    var shareText = currentLang === 'es'
+        ? "Soy un " + pName + " como " + famousMatch + "! Que tipo de marketer eres? "
+        : "I'm a " + pName + " like " + famousMatch + "! What kind of marketer are you? ";
 
     var container = document.getElementById('resultsContainer');
     container.innerHTML =
-        '<div class="section-card"><div class="archetype-header"><div class="archetype-emoji">' + pData.emoji + '</div><div class="archetype-title" style="color:' + pData.color + '">' + pData.name + '</div><div class="archetype-quote">"' + pData.quote + '"</div><p style="margin-top:12px;font-size:0.9rem;color:#94a3b8;">' + pData.desc + '</p></div></div>' +
-        '<div class="section-card"><h2>Your Marketing Profile</h2><div class="radar-wrap">' + radarSVG + '</div>' + dimBarsHTML + '</div>' +
-        '<div class="section-card"><h2>Famous Match: ' + famousMatch + '</h2><p style="font-size:0.85rem;color:#94a3b8;">Based on your scores, you share the most similar marketing DNA with <strong>' + famousMatch + '</strong>.</p></div>' +
-        '<div class="section-card ai-section"><h2>AI Analysis</h2><div class="ai-narrative" id="aiNarrative"><p class="loading">Generating your personalized analysis...</p></div></div>' +
-        '<div class="section-card"><h2>AI Marketing Coach</h2><div style="display:flex;gap:8px;"><input type="text" id="coachQuestion" placeholder="Ask about growth, content, branding, ads..." style="flex:1;padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;outline:none;"><button onclick="askCoach()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Ask</button></div><div id="coachResponse" style="margin-top:12px;font-size:0.85rem;color:#94a3b8;line-height:1.6;"></div></div>' +
-        '<div class="section-card"><div class="share-section"><p style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">Share your marketing profile</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;"><a href="https://wa.me/?text=' + encodeURIComponent(shareText + window.location.origin) + '" target="_blank" style="padding:10px 20px;background:#25D366;color:white;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a><button onclick="navigator.clipboard.writeText(\'' + shareText + '\'+window.location.origin).then(function(){this.textContent=\'Copied!\'}.bind(this))" style="padding:10px 20px;background:#334155;color:#e2e8f0;border:1px solid #ec4899;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;">Copy link</button></div></div></div>' +
-        '<div class="section-card"><div style="text-align:center;"><p style="font-size:1rem;font-weight:600;margin-bottom:4px;">Save your results</p><p style="font-size:0.8rem;color:#94a3b8;margin-bottom:12px;">Get your full marketing profile report</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><input type="email" id="postEmail" placeholder="you@email.com" style="padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;width:200px;outline:none;"><button onclick="saveEmail()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Save</button></div><div id="saveMsg" style="font-size:0.85rem;color:#22c55e;margin-top:8px;display:none;"></div></div></div>';
+        '<div class="section-card"><div class="archetype-header"><div class="archetype-emoji">' + pData.emoji + '</div><div class="archetype-title" style="color:' + pData.color + '">' + pName + '</div><div class="archetype-quote">"' + archQuote(primary) + '"</div><p style="margin-top:12px;font-size:0.9rem;color:#94a3b8;">' + archDesc(primary) + '</p></div></div>' +
+        '<div class="section-card"><h2>' + T('Your Marketing Profile', 'Tu Perfil de Marketing') + '</h2><div class="radar-wrap">' + radarSVG + '</div>' + dimBarsHTML + '</div>' +
+        '<div class="section-card"><h2>' + T('Famous Match: ', 'Match Famoso: ') + famousMatch + '</h2><p style="font-size:0.85rem;color:#94a3b8;">' + T('Based on your scores, you share the most similar marketing DNA with <strong>' + famousMatch + '</strong>.', 'Basado en tus puntuaciones, compartes el ADN de marketing mas similar con <strong>' + famousMatch + '</strong>.') + '</p></div>' +
+        '<div class="section-card ai-section"><h2>' + T('AI Analysis', 'Analisis IA') + '</h2><div class="ai-narrative" id="aiNarrative"><p class="loading">' + T('Generating your personalized analysis...', 'Generando tu analisis personalizado...') + '</p></div></div>' +
+        '<div class="section-card"><h2>' + T('AI Marketing Coach', 'Coach de Marketing IA') + '</h2><div style="display:flex;gap:8px;"><input type="text" id="coachQuestion" placeholder="' + T('Ask about growth, content, branding, ads...', 'Pregunta sobre crecimiento, contenido, marca, ads...') + '" style="flex:1;padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;outline:none;"><button onclick="askCoach()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">' + T('Ask', 'Preguntar') + '</button></div><div id="coachResponse" style="margin-top:12px;font-size:0.85rem;color:#94a3b8;line-height:1.6;"></div></div>' +
+        '<div class="section-card"><div class="share-section"><p style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">' + T('Share your marketing profile', 'Comparte tu perfil de marketing') + '</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;"><a href="https://wa.me/?text=' + encodeURIComponent(shareText + window.location.origin) + '" target="_blank" style="padding:10px 20px;background:#25D366;color:white;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.85rem;">WhatsApp</a><button onclick="navigator.clipboard.writeText(\'' + shareText.replace(/'/g, "\\'") + '\'+window.location.origin).then(function(){this.textContent=\'' + T('Copied!', 'Copiado!') + '\'}.bind(this))" style="padding:10px 20px;background:#334155;color:#e2e8f0;border:1px solid #ec4899;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;">' + T('Copy link', 'Copiar enlace') + '</button></div></div></div>' +
+        '<div class="section-card"><div style="text-align:center;"><p style="font-size:1rem;font-weight:600;margin-bottom:4px;">' + T('Save your results', 'Guarda tus resultados') + '</p><p style="font-size:0.8rem;color:#94a3b8;margin-bottom:12px;">' + T('Get your full marketing profile report', 'Recibe tu reporte completo de perfil de marketing') + '</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><input type="email" id="postEmail" placeholder="' + T('you@email.com', 'tu@email.com') + '" style="padding:10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:0.9rem;width:200px;outline:none;"><button onclick="saveEmail()" style="padding:10px 20px;background:#ec4899;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">' + T('Save', 'Guardar') + '</button></div><div id="saveMsg" style="font-size:0.85rem;color:#22c55e;margin-top:8px;display:none;"></div></div></div>';
 
     setTimeout(function() { document.querySelectorAll('.dim-bar').forEach(function(b) { b.style.width = b.dataset.score + '%'; }); }, 300);
 
-    fetch('/api/ai/narrative', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({scores:scores}) })
+    fetch('/api/ai/narrative', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({scores:scores,language:currentLang}) })
         .then(function(r) { return r.json(); })
-        .then(function(d) { document.getElementById('aiNarrative').innerHTML = '<p>' + (d.narrative||'AI unavailable.').replace(/\n/g,'</p><p>') + '</p>'; })
-        .catch(function() { document.getElementById('aiNarrative').innerHTML = '<p>AI analysis unavailable.</p>'; });
+        .then(function(d) { document.getElementById('aiNarrative').innerHTML = '<p>' + (d.narrative||T('AI unavailable.','IA no disponible.')).replace(/\n/g,'</p><p>') + '</p>'; })
+        .catch(function() { document.getElementById('aiNarrative').innerHTML = '<p>' + T('AI analysis unavailable.','Analisis de IA no disponible.') + '</p>'; });
 }
 
 async function askCoach() {
     var q = document.getElementById('coachQuestion').value.trim();
     if (!q) return;
-    document.getElementById('coachResponse').innerHTML = '<em>Thinking...</em>';
-    try { var r = await fetch('/api/ai/coach', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({scores:globalScores,question:q}) }); var d = await r.json(); document.getElementById('coachResponse').textContent = d.answer||'No response.'; } catch(e) { document.getElementById('coachResponse').textContent = 'Coach unavailable.'; }
+    document.getElementById('coachResponse').innerHTML = '<em>' + T('Thinking...', 'Pensando...') + '</em>';
+    try { var r = await fetch('/api/ai/coach', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({scores:globalScores,question:q,language:currentLang}) }); var d = await r.json(); document.getElementById('coachResponse').textContent = d.answer||T('No response.', 'Sin respuesta.'); } catch(e) { document.getElementById('coachResponse').textContent = T('Coach unavailable.', 'Coach no disponible.'); }
 }
 
 async function saveEmail() {
     var email = document.getElementById('postEmail').value.trim().toLowerCase();
-    if (!email||!email.includes('@')) { alert('Please enter a valid email'); return; }
+    if (!email||!email.includes('@')) { alert(T('Please enter a valid email', 'Por favor ingresa un email valido')); return; }
     try { await fetch('/api/marketer-profile', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:email,scores:globalScores,timestamp:new Date().toISOString()}) }); } catch(e) {}
-    document.getElementById('saveMsg').textContent = 'Results saved!';
+    document.getElementById('saveMsg').textContent = T('Results saved!', 'Resultados guardados!');
     document.getElementById('saveMsg').style.display = 'block';
     document.getElementById('postEmail').disabled = true;
 }
@@ -288,7 +326,7 @@ function buildRadar(scores) {
     dims.forEach(function(d,i){var a=startAngle+i*step,val=(scores[d]||0)/100*r,p=pol(a,val);dataPts.push(p.x+','+p.y);dotsHTML+='<circle class="dot" cx="'+p.x+'" cy="'+p.y+'" r="3"/>';});
     var dataHTML='<polygon class="data-area" points="'+dataPts.join(' ')+'"/>';
     var labelsHTML='';
-    dims.forEach(function(d,i){var a=startAngle+i*step,p=pol(a,r+22),anchor='middle';if(p.x<cx-10)anchor='end';else if(p.x>cx+10)anchor='start';var short=ARCHETYPES[d].name.split(' ')[0];labelsHTML+='<text x="'+p.x+'" y="'+p.y+'" text-anchor="'+anchor+'" dominant-baseline="central" class="label-text" fill="'+DIM_COLORS[d]+'">'+short+'</text>';labelsHTML+='<text x="'+p.x+'" y="'+(p.y+12)+'" text-anchor="'+anchor+'" dominant-baseline="central" class="score-text">'+scores[d]+'%</text>';});
+    dims.forEach(function(d,i){var a=startAngle+i*step,p=pol(a,r+22),anchor='middle';if(p.x<cx-10)anchor='end';else if(p.x>cx+10)anchor='start';var aName=archName(d);var short=aName.split(' ')[0];labelsHTML+='<text x="'+p.x+'" y="'+p.y+'" text-anchor="'+anchor+'" dominant-baseline="central" class="label-text" fill="'+DIM_COLORS[d]+'">'+short+'</text>';labelsHTML+='<text x="'+p.x+'" y="'+(p.y+12)+'" text-anchor="'+anchor+'" dominant-baseline="central" class="score-text">'+scores[d]+'%</text>';});
     return '<svg class="radar-svg" viewBox="0 0 260 260">'+gridHTML+axesHTML+dataHTML+dotsHTML+labelsHTML+'</svg>';
 }
 </script>
