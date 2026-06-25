@@ -76,9 +76,13 @@ async def assessment():
 
 # ========== API ==========
 
+MARKETER_PROFILE_COLS = {"email", "scores", "primary_type", "famous_match", "answers",
+                         "ui_variant", "timestamp"}
+
 @app.post("/api/marketer-profile")
 async def save_profile(data: dict):
-    result = await save_to_supabase("marketer_profiles", data)
+    clean = {k: v for k, v in data.items() if k in MARKETER_PROFILE_COLS}
+    result = await save_to_supabase("marketer_profiles", clean)
     if not result:
         raise HTTPException(500, "Failed to save profile")
     return {"status": "ok"}
